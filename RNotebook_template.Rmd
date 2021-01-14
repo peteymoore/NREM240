@@ -1,0 +1,103 @@
+---
+title: "Sample R Notebook for NREM 240"
+author: "Jolene R. Student"
+date: "February 30, 2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. You can use this as a template (i.e., a starting point) or orientation document for homework assignments or reports in NREM 240. Just open this template in RStudio, rename the file to something appropriate for the assignment, and replace the text and code blocks here with your own text and code. 
+
+# What's an R Notebook?
+R Notebooks are a fantastic way to describe, document, and share work, and they represent one way to create **reproducible** work. The term [reproducible](https://ropensci.github.io/reproducibility-guide/sections/introduction/) has a specific meaning in this context. If you were to provide the source documents from a detailed data analysis or computational model (e.g., this file and any data files that it requires) to somebody else who has the same software and training that you do, they should be able to fully understand and re-run your analysis, from raw data to finished report, and *reproduce* the same results. This means that they could also identify any errors or mistaken assumptions or methods. Thus, a document like this R Notebook is a way to present the decisions, assumptions, and analytical workflow (including the code) that connect the raw data to the final results. Yes, there's a learning curve both to working in R and creating R notebooks, but these skills are valuable to have and they look good on a resume!  
+
+R Notebooks combine narrative text like this with R code chunks (see below) and the output of those R code chunks, including analyses, tables, and graphs. There are two files involved in a R Notebook: the .Rmd file, which you type into within the RStudio editor window, and which can look a bit ugly as you're preparing it, and an output file, which should look clean and attractive. By default, R Notebooks produce html output (i.e., a webpage), but the output can easily be changed to pdf documents (if you have a [LaTeX compiler](https://www.latex-project.org/get/) installed) or even Word documents. We will mostly work with html output, and don't worry, you do NOT need to know *anything* about making webpages.
+
+## Writing in RMarkdown
+As the author of an R Notebook, you write the narrative text in a slightly-enhanced version of plain text. If you think of the keystrokes or menu clicks that are used to format text in a word processor (e.g., display as bold, italic, or section headings) as ways to "mark up" your text for formatted display, the way you format things in R Notebooks is with [RMarkdown](https://rmarkdown.rstudio.com/lesson-1.html). Instead of the menu clicking or control sequences, there are simple text flags that produce basic formatting features like **bold** (with text surrounded by two asterisks on each side) and *italic* (one asterisk on each side). We won't go into detail here, but there are tons of resources on the web for formatting, and RStudio provides links to handy cheat sheets in the Help menu.
+
+In addition to simple text formatting, RMarkdown allows you to easily write mathematical symbols and equations like $A = \pi \times r^2$ just by writing text and surrounding it with dollar signs. So the equation above (for the area of a circle or course) is written `$A = \pi \times r^2$`. I can also set that on its own line as a "display equation" by putting double `$$` before and after:
+$$A = \pi \times r^2$$
+Note that the symbols that aren't just regular english keyboard characters are produced by just typing a backslash (`\`) and then the phonetic spelling of the symbol or character you want. This rule of thumb works most of the time, but if there's a symbol or equation construct you need that's more complicated, there are plenty of [resources on the web](https://artofproblemsolving.com/wiki/index.php/LaTeX:Symbols). When you preview the notebook, these will turn into nicely-typeset symbols and equations, thanks to the Javascript engine MathJax.
+
+## Rendering your notebook
+To go from the raw .Rmd file in the RStudio editor to a finished html or pdf document, you need to do two things:
+
+1. Run all of the code in the document using the Run menu or Ctrl+Alt+R (on a PC; or Cmd+Alt+R on a Mac); and
+2. Preview the html output document using the "Preview" button above the editor, or "knit" the document if using pdf-output.
+
+For most purposes in NREM 240, it is sufficient to simply produce an html file and submit that through Canvas.
+
+
+A well-structured homework assignment still has the same sections and content as reports created in Word or Google Docs, but the layout and formatting will be automated and isn't as easily customized.
+
+# Doing analyses and displaying results
+The gray-filled block below is a code "chunk", which (in the .Rmd file version of this document) is enclosed in three tick marks and a code-type indicator above (````{r}`) and three more tick marks below, which don't appear in the pdf output but are key to telling RStudio that the text enclosed should be treated as code. The commands inside the chunk will be run by R when you Run either the chunk or the whole document.
+
+With the .Rmd document open in RStudio's editor window, try executing the chunk below by clicking the *Run* button within the chunk or by placing your cursor inside the chunk and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+# When you begin a line with '#' within a code block, everything 
+# after the # in that line is ignored by R and simply reproduced 
+# just as a comment. This may seem unimportant, but can serve as 
+# a really helpful way to make notes that remind you, and explain
+# to others, what key commands are doing.
+
+# For example, the line below loads a built-in dataset:
+data("iris")
+
+# We can take a quick peak at the first few rows of data just to ensure we 
+# understand it's structure using the command 'head(data)':
+head(iris)
+
+# To finish a code bock, add three tick marks below, if they aren't already
+# there.
+
+```
+
+If we want to add more narrative text, we need to ensure that we have closed the preceding code chunk with tick marks, and then we can just type again as though we're back in RMarkdown processor. When we're ready for more data manipulation, analysis, or plotting, we can add a new code chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*, or by typing those tick-mark sequences again. Let's make a graph and do some data manipulation.
+
+```{r}
+# Let's define a new variable in the iris dataset for "aspect ratio"
+# and add it to the data frame:
+Petal.AR <- iris$Petal.Length/iris$Petal.Width
+iris$Petal.AR <- Petal.AR
+
+# The line below creates a simple scatter plot of two variables.
+plot(iris$Petal.Length,iris$Petal.Width)
+```
+
+
+In the commands above, the iris tells R which dataset we want to use, the `$` tells R that we want to access a variable (i.e. column), and the text names after the `$` indicates which variables to plot. This uses the default "base R" plotting functions, which are fairly simple, but often not easy to customize. For more customizable and attractive plots, I recommend loading the package ggplot2.
+
+```{r}
+library(ggplot2)
+```
+
+The library command tells R to temporarily (until you close RStudio) add the R package called ggplot2 to the R session. Loading a package like this in R makes a new set of commands and capabilities available. If you don't have this (or any other) package downloaded, running the command within RStudio will usually trigger a dialog asking you if you want to download the package. You should click 'Yes', and if you're asked to choose a repository mirror to download from, it just so happens that ISU has one of the repositories!
+
+The ggplot package allows you to construct plots piece by piece, with separate features or customizations added with a `+`. Let's plot the same variables that we did above with the base R plot, then add some features.
+
+```{r}
+# This first line establishes which dataset and variables we're using
+# read the "aes" as aesthetic details.
+ggplot(data = iris, aes(x=Petal.Length, y=Petal.Width)) +
+  # notice that I ended that first line with a + meaning there's more below
+  # the next line says we want to plot points for the data. If we only wrote
+  # geom_point(), it would have made black points for all the data, but here
+  # I've added an aesthetic instruction to vary color by species, which
+  # is another variable in the dataset. So ggplot will still plot all the
+  # same points as before, but will now show different species by color.
+  # By default, this adds a color legend, but we could customize that too
+  # if we wanted.
+  geom_point(aes(color=Species)) +
+  # The last line just produces axis labels with units, which is good practice.
+  labs(x="Petal Length, cm", y="Petal Width, cm")
+```
+
+That should be enough to get you started! There are tons of additional resources on the internet, and I recommend using them! In the reference list below, I'll link to a github website that provides a bunch of great links for the kind of tasks and questions that may come up as you are working with RMarkdown in general. And this is a good reminder that you should always reference any external resources you use in completing your assignments.
+
+# References
+
+Balamuta, J.J., teach-r: List of teaching resources for R, [https://github.com/coatless/teach-r](https://github.com/coatless/teach-r). Webpage accessed 1/13/21: 
